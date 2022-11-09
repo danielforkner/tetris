@@ -1,4 +1,5 @@
 // GAME STATE
+let colors = ['red', 'blue', 'green', 'orange', 'purple'];
 let game = {
   playing: false,
   timer: 0,
@@ -6,6 +7,7 @@ let game = {
     [1, 1],
     [1, 1],
   ],
+  currentColor: 'red',
   positionY: 0,
 };
 
@@ -41,7 +43,7 @@ function drawPiece() {
     for (let j = 0; j < piece[i].length; j++) {
       let boardRow = i + game.positionY;
       let pixel = document.getElementById(boardRow + '-' + j);
-      pixel.classList.add('red');
+      pixel.classList.add(game.currentColor);
     }
   }
   checkBottom();
@@ -57,7 +59,7 @@ function removePiece() {
     for (let j = 0; j < piece[i].length; j++) {
       let boardRow = i + game.positionY;
       let pixel = document.getElementById(boardRow + '-' + j);
-      pixel.classList.remove('red');
+      pixel.classList.remove(game.currentColor);
     }
   }
 }
@@ -66,14 +68,20 @@ function checkBottom() {
   let piece = game.currentPiece;
   let tableBottom = table.children.length - 1;
   let pieceBottom = piece.length - 1 + game.positionY;
+  // bottom of the board
   if (pieceBottom === tableBottom) {
     game.positionY = 0;
+    let randomNumber = Math.floor(Math.random() * colors.length);
+    game.currentColor = colors[randomNumber];
     return;
   }
+  // on top of another piece
   let beneathPiece = pieceBottom + 1;
   let classList = document.getElementById(beneathPiece + '-' + 0).classList;
   if (classList.length) {
     game.positionY = 0;
+    let randomNumber = Math.floor(Math.random() * colors.length);
+    game.currentColor = colors[randomNumber];
     return;
   }
 }
