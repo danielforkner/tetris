@@ -6,6 +6,7 @@ let game = {
     [1, 1],
     [1, 1],
   ],
+  positionY: 0,
 };
 
 // DOM Elements
@@ -38,10 +39,15 @@ function drawPiece() {
   let piece = game.currentPiece;
   for (let i = 0; i < piece.length; i++) {
     for (let j = 0; j < piece[i].length; j++) {
-      let pixel = document.getElementById(i + '-' + j);
+      let boardRow = i + game.positionY;
+      let pixel = document.getElementById(boardRow + '-' + j);
       pixel.classList.add('red');
     }
   }
+}
+
+function useGravity() {
+  game.positionY++;
 }
 
 function advanceTime() {
