@@ -2,6 +2,10 @@
 let game = {
   playing: false,
   timer: 0,
+  currentPiece: [
+    [1, 1],
+    [1, 1],
+  ],
 };
 
 // DOM Elements
@@ -30,10 +34,17 @@ for (let i = 0; i < 30; i++) {
 }
 
 // Game Functions
+function drawPiece() {
+  let piece = game.currentPiece;
+  for (let i = 0; i < piece.length; i++) {
+    for (let j = 0; j < piece[i].length; j++) {
+      let pixel = document.getElementById(i + '-' + j);
+      pixel.classList.add('red');
+    }
+  }
+}
+
 function advanceTime() {
-  // if (game.playing === false) {
-  //   return;
-  // }
   timer.innerText = ++game.timer;
 }
 
