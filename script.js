@@ -50,6 +50,17 @@ function useGravity() {
   game.positionY++;
 }
 
+function removePiece() {
+  let piece = game.currentPiece;
+  for (let i = 0; i < piece.length; i++) {
+    for (let j = 0; j < piece[i].length; j++) {
+      let boardRow = i + game.positionY;
+      let pixel = document.getElementById(boardRow + '-' + j);
+      pixel.classList.remove('red');
+    }
+  }
+}
+
 function advanceTime() {
   timer.innerText = ++game.timer;
 }
@@ -58,4 +69,7 @@ function advanceTime() {
 setInterval(function () {
   if (!game.playing) return;
   advanceTime();
-}, 1000);
+  removePiece();
+  useGravity();
+  drawPiece();
+}, 250);
