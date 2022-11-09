@@ -44,6 +44,7 @@ function drawPiece() {
       pixel.classList.add('red');
     }
   }
+  checkBottom();
 }
 
 function useGravity() {
@@ -61,6 +62,22 @@ function removePiece() {
   }
 }
 
+function checkBottom() {
+  let piece = game.currentPiece;
+  let tableBottom = table.children.length - 1;
+  let pieceBottom = piece.length - 1 + game.positionY;
+  if (pieceBottom === tableBottom) {
+    game.positionY = 0;
+    return;
+  }
+  let beneathPiece = pieceBottom + 1;
+  let classList = document.getElementById(beneathPiece + '-' + 0).classList;
+  if (classList.length) {
+    game.positionY = 0;
+    return;
+  }
+}
+
 function advanceTime() {
   timer.innerText = ++game.timer;
 }
@@ -72,4 +89,4 @@ setInterval(function () {
   removePiece();
   useGravity();
   drawPiece();
-}, 250);
+}, 75);
