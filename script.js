@@ -72,12 +72,22 @@ window.addEventListener('keydown', function (event) {
   if (!game.playing) {
     return;
   }
+  let piece = game.currentPiece;
+  let rightPosition = game.positionX + piece[0].length - 1;
   if (event.key === 'd') {
+    // move right
+    if (rightPosition >= 14) {
+      return;
+    }
     removePiece();
     game.positionX++;
     drawPiece();
   }
   if (event.key === 'a') {
+    // move left
+    if (game.positionX <= 0) {
+      return;
+    }
     removePiece();
     game.positionX--;
     drawPiece();
