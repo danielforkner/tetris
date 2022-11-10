@@ -9,21 +9,13 @@ let game = {
   ],
   currentColor: 'red',
   positionY: 0,
+  positionX: 0,
 };
 
 // DOM Elements
 let playBtn = document.getElementById('play');
 let timer = document.getElementById('timer');
 let table = document.getElementById('table');
-
-playBtn.addEventListener('click', function () {
-  game.playing = !game.playing;
-  if (game.playing) {
-    playBtn.innerText = 'Pause';
-  } else {
-    playBtn.innerText = 'Start';
-  }
-});
 
 // Game Board
 for (let i = 0; i < 30; i++) {
@@ -36,13 +28,43 @@ for (let i = 0; i < 30; i++) {
   }
 }
 
+// Event Listeners
+playBtn.addEventListener('click', function () {
+  game.playing = !game.playing;
+  if (game.playing) {
+    playBtn.innerText = 'Pause';
+  } else {
+    playBtn.innerText = 'Start';
+  }
+});
+
+window.addEventListener('keydown', function (event) {
+  console.log(event.key);
+  if (event.key === 'd') {
+    removePiece();
+    game.positionX++;
+    drawPiece();
+  }
+  if (event.key === 'a') {
+    removePiece();
+    game.positionX--;
+    drawPiece();
+  }
+  if (event.key === 's') {
+    removePiece();
+    useGravity();
+    drawPiece();
+  }
+});
+
 // Game Functions
 function drawPiece() {
   let piece = game.currentPiece;
   for (let i = 0; i < piece.length; i++) {
     for (let j = 0; j < piece[i].length; j++) {
       let boardRow = i + game.positionY;
-      let pixel = document.getElementById(boardRow + '-' + j);
+      let boardColumn = j + game.positionX;
+      let pixel = document.getElementById(boardRow + '-' + boardColumn);
       pixel.classList.add(game.currentColor);
     }
   }
@@ -58,7 +80,8 @@ function removePiece() {
   for (let i = 0; i < piece.length; i++) {
     for (let j = 0; j < piece[i].length; j++) {
       let boardRow = i + game.positionY;
-      let pixel = document.getElementById(boardRow + '-' + j);
+      let boardColumn = j + game.positionX;
+      let pixel = document.getElementById(boardRow + '-' + boardColumn);
       pixel.classList.remove(game.currentColor);
     }
   }
@@ -77,7 +100,9 @@ function checkBottom() {
   }
   // on top of another piece
   let beneathPiece = pieceBottom + 1;
-  let classList = document.getElementById(beneathPiece + '-' + 0).classList;
+  let classList = document.getElementById(
+    beneathPiece + '-' + game.positionX
+  ).classList;
   if (classList.length) {
     game.positionY = 0;
     let randomNumber = Math.floor(Math.random() * colors.length);
