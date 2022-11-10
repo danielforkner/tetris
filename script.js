@@ -114,6 +114,9 @@ function removePiece() {
   let piece = game.currentPiece;
   for (let i = 0; i < piece.length; i++) {
     for (let j = 0; j < piece[i].length; j++) {
+      if (piece[i][j] === 0) {
+        continue;
+      }
       let boardRow = i + game.positionY;
       let boardColumn = j + game.positionX;
       let pixel = document.getElementById(boardRow + '-' + boardColumn);
