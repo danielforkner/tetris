@@ -1,5 +1,35 @@
 // GAME STATE
 let colors = ['red', 'blue', 'green', 'orange', 'purple'];
+let shapes = [
+  [
+    [1, 1],
+    [1, 1],
+  ],
+  [
+    [0, 1],
+    [0, 1],
+    [0, 1],
+    [1, 1],
+  ],
+  [
+    [1, 0],
+    [1, 0],
+    [1, 0],
+    [1, 1],
+  ],
+  [
+    [0, 1, 0],
+    [1, 1, 1],
+  ],
+  [
+    [1, 1, 0],
+    [0, 1, 1],
+  ],
+  [
+    [0, 1, 1],
+    [1, 1, 0],
+  ],
+];
 let game = {
   playing: false,
   timer: 0,
@@ -39,7 +69,9 @@ playBtn.addEventListener('click', function () {
 });
 
 window.addEventListener('keydown', function (event) {
-  console.log(event.key);
+  if (!game.playing) {
+    return;
+  }
   if (event.key === 'd') {
     removePiece();
     game.positionX++;
@@ -62,6 +94,9 @@ function drawPiece() {
   let piece = game.currentPiece;
   for (let i = 0; i < piece.length; i++) {
     for (let j = 0; j < piece[i].length; j++) {
+      if (piece[i][j] === 0) {
+        continue;
+      }
       let boardRow = i + game.positionY;
       let boardColumn = j + game.positionX;
       let pixel = document.getElementById(boardRow + '-' + boardColumn);
@@ -93,9 +128,8 @@ function checkBottom() {
   let pieceBottom = piece.length - 1 + game.positionY;
   // bottom of the board
   if (pieceBottom === tableBottom) {
-    game.positionY = 0;
-    let randomNumber = Math.floor(Math.random() * colors.length);
-    game.currentColor = colors[randomNumber];
+    // select new piece
+    selectNewPiece();
     return;
   }
   // on top of another piece
@@ -104,11 +138,18 @@ function checkBottom() {
     beneathPiece + '-' + game.positionX
   ).classList;
   if (classList.length) {
-    game.positionY = 0;
-    let randomNumber = Math.floor(Math.random() * colors.length);
-    game.currentColor = colors[randomNumber];
+    // select new piece
+    selectNewPiece();
     return;
   }
+}
+
+function selectNewPiece() {
+  game.positionY = 0;
+  let randomNumberColors = Math.floor(Math.random() * colors.length);
+  let randomNumberShapes = Math.floor(Math.random() * shapes.length);
+  game.currentColor = colors[randomNumberColors];
+  game.currentPiece = shapes[randomNumberShapes];
 }
 
 function advanceTime() {
