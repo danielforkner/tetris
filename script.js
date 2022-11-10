@@ -38,7 +38,7 @@ let game = {
     [1, 1],
   ],
   currentColor: 'red',
-  positionY: 0,
+  positionY: -2,
   positionX: 0,
 };
 
@@ -110,6 +110,9 @@ function drawPiece() {
       let boardRow = i + game.positionY;
       let boardColumn = j + game.positionX;
       let pixel = document.getElementById(boardRow + '-' + boardColumn);
+      if (pixel === null) {
+        continue;
+      }
       pixel.classList.add(game.currentColor);
     }
   }
@@ -130,6 +133,9 @@ function removePiece() {
       let boardRow = i + game.positionY;
       let boardColumn = j + game.positionX;
       let pixel = document.getElementById(boardRow + '-' + boardColumn);
+      if (pixel === null) {
+        continue;
+      }
       pixel.classList.remove(game.currentColor);
     }
   }
@@ -176,4 +182,4 @@ setInterval(function () {
   removePiece();
   useGravity();
   drawPiece();
-}, 75);
+}, 1000);
