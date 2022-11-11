@@ -38,7 +38,7 @@ let game = {
     [1, 1],
   ],
   currentColor: 'red',
-  positionY: -2,
+  positionY: 15,
   positionX: 6,
 };
 
@@ -73,15 +73,15 @@ window.addEventListener('keydown', function (event) {
     return;
   }
   let piece = game.currentPiece;
-  let rightPosition = game.positionX + piece[0].length - 1;
   if (event.key === 'd') {
     // move right
-    if (rightPosition >= 14) {
-      return;
-    }
     removePiece();
     game.positionX++;
+    if (checkRight()) {
+      game.positionX--;
+    }
     drawPiece();
+    return;
   }
   if (event.key === 'a') {
     // move left
@@ -179,13 +179,28 @@ function checkTop() {
   return false;
 }
 
+function checkRight() {
+  let rightPosition = game.positionX + game.currentPiece[0].length - 1;
+  console.log('rightPos: ', rightPosition);
+  if (rightPosition >= 15) {
+    return true;
+  }
+  return false;
+}
+
 function selectNewPiece() {
   let randomNumberColors = Math.floor(Math.random() * colors.length);
   let randomNumberShapes = Math.floor(Math.random() * shapes.length);
   game.currentColor = colors[randomNumberColors];
   game.currentPiece = shapes[randomNumberShapes];
-  let length = game.currentPiece.length;
-  game.positionY = 0 - length;
+  let pieceLength = game.currentPiece.length;
+  game.positionY = 0 - pieceLength;
+  // if (checkRight()) {
+  //   game.positionX--;
+  // }
+  while (checkRight()) {
+    game.positionX--;
+  }
 }
 
 function advanceTime() {
