@@ -1,26 +1,26 @@
 // GAME STATE
 let colors = ['red', 'blue', 'green', 'orange', 'purple'];
 let shapes = [
-  [
-    [1, 1],
-    [1, 1],
-  ],
-  [
-    [0, 1],
-    [0, 1],
-    [0, 1],
-    [1, 1],
-  ],
-  [
-    [1, 0],
-    [1, 0],
-    [1, 0],
-    [1, 1],
-  ],
-  [
-    [0, 1, 0],
-    [1, 1, 1],
-  ],
+  // [
+  //   [1, 1],
+  //   [1, 1],
+  // ],
+  // [
+  //   [0, 1],
+  //   [0, 1],
+  //   [0, 1],
+  //   [1, 1],
+  // ],
+  // [
+  //   [1, 0],
+  //   [1, 0],
+  //   [1, 0],
+  //   [1, 1],
+  // ],
+  // [
+  //   [0, 1, 0],
+  //   [1, 1, 1],
+  // ],
   [
     [1, 1, 0],
     [0, 1, 1],
@@ -39,7 +39,7 @@ let game = {
   ],
   currentColor: 'red',
   positionY: -2,
-  positionX: 0,
+  positionX: 6,
 };
 
 // DOM Elements
@@ -116,7 +116,14 @@ function drawPiece() {
       pixel.classList.add(game.currentColor);
     }
   }
-  checkBottom();
+  let atTop = checkTop();
+  let atBottom = checkBottom();
+  if (atTop && atBottom) {
+    game.playing = false;
+    console.log('YOU LOSE');
+  } else if (atBottom) {
+    selectNewPiece();
+  }
 }
 
 function useGravity() {
@@ -147,28 +154,38 @@ function checkBottom() {
   let pieceBottom = piece.length - 1 + game.positionY;
   // bottom of the board
   if (pieceBottom === tableBottom) {
-    // select new piece
-    selectNewPiece();
-    return;
+    return true;
   }
   // on top of another piece
-  let beneathPiece = pieceBottom + 1;
-  let classList = document.getElementById(
-    beneathPiece + '-' + game.positionX
-  ).classList;
-  if (classList.length) {
-    // select new piece
-    selectNewPiece();
-    return;
+  for (let i = 0; i < piece.length; i++) {
+    for (let j = 0; j < piece[i].length; j++) {
+      // check for hanging blocks or bottom row
+      if (piece[i][j] && !piece[i + 1]?.[j]) {
+        let y = game.positionY + i + 1;
+        let x = game.positionX + j;
+        if (document.getElementById(y + '-' + x).classList.length) {
+          return true;
+        }
+      }
+    }
   }
+  return false;
+}
+
+function checkTop() {
+  if (game.positionY <= 0) {
+    return true;
+  }
+  return false;
 }
 
 function selectNewPiece() {
-  game.positionY = 0;
   let randomNumberColors = Math.floor(Math.random() * colors.length);
   let randomNumberShapes = Math.floor(Math.random() * shapes.length);
   game.currentColor = colors[randomNumberColors];
   game.currentPiece = shapes[randomNumberShapes];
+  let length = game.currentPiece.length;
+  game.positionY = 0 - length;
 }
 
 function advanceTime() {
@@ -182,4 +199,4 @@ setInterval(function () {
   removePiece();
   useGravity();
   drawPiece();
-}, 1000);
+}, 500);
