@@ -1,26 +1,24 @@
 // GAME STATE
 let colors = ['red', 'blue', 'green', 'orange', 'purple'];
 let shapes = [
-  // [
-  //   [1, 1],
-  //   [1, 1],
-  // ],
-  // [
-  //   [0, 1],
-  //   [0, 1],
-  //   [0, 1],
-  //   [1, 1],
-  // ],
-  // [
-  //   [1, 0],
-  //   [1, 0],
-  //   [1, 0],
-  //   [1, 1],
-  // ],
-  // [
-  //   [0, 1, 0],
-  //   [1, 1, 1],
-  // ],
+  [
+    [1, 1],
+    [1, 1],
+  ],
+  [
+    [0, 1],
+    [0, 1],
+    [1, 1],
+  ],
+  [
+    [1, 0],
+    [1, 0],
+    [1, 1],
+  ],
+  [
+    [0, 1, 0],
+    [1, 1, 1],
+  ],
   [
     [1, 1, 0],
     [0, 1, 1],
@@ -75,11 +73,11 @@ window.addEventListener('keydown', function (event) {
   let piece = game.currentPiece;
   if (event.key === 'd') {
     // move right
+    if (checkRightWall()) {
+      return;
+    }
     removePiece();
     game.positionX++;
-    if (checkRight()) {
-      game.positionX--;
-    }
     drawPiece();
     return;
   }
@@ -91,15 +89,60 @@ window.addEventListener('keydown', function (event) {
     removePiece();
     game.positionX--;
     drawPiece();
+    return;
+  }
+  if (event.key === 'e') {
+    removePiece();
+    rotateRight();
+    drawPiece();
+  }
+  if (event.key === 'q') {
+    removePiece();
+    rotateLeft();
+    drawPiece();
   }
   if (event.key === 's') {
     removePiece();
     useGravity();
     drawPiece();
+    return;
   }
 });
 
 // Game Functions
+function rotateRight() {
+  let piece = game.currentPiece;
+  let newArray = [];
+  for (let i = 0; i < piece[0].length; i++) {
+    let row = [];
+    for (let j = piece.length - 1; j >= 0; j--) {
+      row.push(piece[j][i]);
+    }
+    newArray.push(row);
+  }
+  console.log(newArray);
+  game.currentPiece = newArray;
+}
+
+let array = [
+  [1, 0, 0],
+  [1, 0, 0],
+  [1, 0, 0],
+];
+function rotateLeft() {
+  let piece = game.currentPiece;
+  let newArray = [];
+  for (let i = piece[0].length - 1; i >= 0; i--) {
+    let row = [];
+    for (let j = 0; j < piece.length; j++) {
+      row.push(piece[j][i]);
+    }
+    newArray.push(row);
+  }
+  console.log(newArray);
+  game.currentPiece = newArray;
+}
+
 function drawPiece() {
   let piece = game.currentPiece;
   for (let i = 0; i < piece.length; i++) {
@@ -179,10 +222,9 @@ function checkTop() {
   return false;
 }
 
-function checkRight() {
+function checkRightWall() {
   let rightPosition = game.positionX + game.currentPiece[0].length - 1;
-  console.log('rightPos: ', rightPosition);
-  if (rightPosition >= 15) {
+  if (rightPosition >= 14) {
     return true;
   }
   return false;
@@ -198,8 +240,10 @@ function selectNewPiece() {
   // if (checkRight()) {
   //   game.positionX--;
   // }
-  while (checkRight()) {
+  let rightPosition = game.positionX + game.currentPiece[0].length - 1;
+  while (rightPosition >= 15) {
     game.positionX--;
+    rightPosition = game.positionX + game.currentPiece[0].length - 1;
   }
 }
 
