@@ -1,10 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background-color: rgb(88, 35, 140);
+    color: white
+}
 td {
-    border: 0.25px solid black;
-    height: 10px;
-    width: 10px;
+    border: 1px solid #F2F2F2;
+    height: 25px;
+    width: 25px;
 }
 table {
     border-spacing: 0;
+    background: #ADA996;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+
 }
 .red {
     background-color: red;
@@ -16,7 +29,7 @@ table {
     background-color: blue;
 }
 .orange {
-    background-color: orange;
+    background-color: rgb(239, 173, 48);
 }
 .purple {
     background-color: purple;

@@ -39,21 +39,20 @@ let game = {
   currentColor: 'red',
   positionY: -2,
   positionX: 6,
+  score: 0,
+  level: 1,
+  speed: 500,
 };
 
 // DOM Elements
 let playBtn = document.getElementById('play');
-let timer = document.getElementById('timer');
+let scoreTxt = document.getElementById('score');
 let table = document.getElementById('table');
+let levelTxt = document.getElementById('level');
 
 // Game Board
 for (let i = 0; i < 30; i++) {
-  let row = document.createElement('tr');
-  table.appendChild(row);
-  for (let j = 0; j < 15; j++) {
-    let cell = document.createElement('td');
-    row.appendChild(cell);
-  }
+  createRow();
 }
 
 // Event Listeners
@@ -119,15 +118,9 @@ function rotateRight() {
     }
     newArray.push(row);
   }
-  console.log(newArray);
   game.currentPiece = newArray;
 }
 
-let array = [
-  [1, 0, 0],
-  [1, 0, 0],
-  [1, 0, 0],
-];
 function rotateLeft() {
   let piece = game.currentPiece;
   let newArray = [];
@@ -138,7 +131,6 @@ function rotateLeft() {
     }
     newArray.push(row);
   }
-  console.log(newArray);
   game.currentPiece = newArray;
 }
 
@@ -241,13 +233,27 @@ function checkLineClear(line) {
     }
   }
   table.children[line].remove();
+  score();
+  createRow();
+  return cleared;
+}
+
+function createRow() {
   let newRow = document.createElement('tr');
   for (let j = 0; j < 15; j++) {
     let cell = document.createElement('td');
     newRow.appendChild(cell);
   }
   table.prepend(newRow);
-  return cleared;
+}
+
+function score() {
+  game.score += 1 * game.level;
+  // if (game.score % 10 === 0) {
+  //   game.level++;
+  // }
+  scoreTxt.innerText = game.score;
+  levelTxt.innerText = game.level;
 }
 
 function selectNewPiece() {
@@ -257,9 +263,6 @@ function selectNewPiece() {
   game.currentPiece = shapes[randomNumberShapes];
   let pieceLength = game.currentPiece.length;
   game.positionY = 0 - pieceLength;
-  // if (checkRight()) {
-  //   game.positionX--;
-  // }
   let rightPosition = game.positionX + game.currentPiece[0].length - 1;
   while (rightPosition >= 15) {
     game.positionX--;
@@ -267,15 +270,10 @@ function selectNewPiece() {
   }
 }
 
-function advanceTime() {
-  timer.innerText = ++game.timer;
-}
-
 // Tick
 setInterval(function () {
   if (!game.playing) return;
-  advanceTime();
   removePiece();
   useGravity();
   drawPiece();
-}, 75);
+}, 250);
