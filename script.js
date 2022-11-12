@@ -42,6 +42,8 @@ let game = {
   score: 0,
   level: 1,
   speed: 500,
+  boardRows: 30,
+  boardColumns: 15,
 };
 
 // DOM Elements
@@ -51,7 +53,7 @@ let table = document.getElementById('table');
 let levelTxt = document.getElementById('level');
 
 // Game Board
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < game.boardRows; i++) {
   createRow();
 }
 
@@ -122,6 +124,13 @@ function rotateRight() {
     newArray.push(row);
   }
   game.currentPiece = newArray;
+  // console.log('len: ', newArray.length);
+  // console.log('x: ', game.positionX);
+  while (game.positionX + newArray[0].length - 1 > 14) {
+    // console.log(game.positionX);
+    game.positionX--;
+    // console.log(game.positionX);
+  }
 }
 
 function rotateLeft() {
@@ -229,9 +238,6 @@ function checkLeft() {
   for (let i = 0; i < piece.length; i++) {
     let pixel =
       table.children[i + game.positionY]?.children[game.positionX - 1];
-    console.log(pixel);
-    console.log(piece[i][0]);
-    console.log(pixel.classList.length);
     // debugger
     if (piece[i][0] && pixel && pixel.classList.length) {
       return true;
@@ -277,7 +283,7 @@ function checkLineClear(line) {
 
 function createRow() {
   let newRow = document.createElement('tr');
-  for (let j = 0; j < 15; j++) {
+  for (let j = 0; j < game.boardColumns; j++) {
     let cell = document.createElement('td');
     newRow.appendChild(cell);
   }
