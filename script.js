@@ -69,9 +69,9 @@ window.addEventListener('keydown', function (event) {
   if (!game.playing) {
     return;
   }
+  // move right
   if (event.key === 'd') {
-    // move right
-    if (checkRightWall()) {
+    if (checkRight()) {
       return;
     }
     removePiece();
@@ -79,9 +79,9 @@ window.addEventListener('keydown', function (event) {
     drawPiece();
     return;
   }
+  // move left
   if (event.key === 'a') {
-    // move left
-    if (game.positionX <= 0) {
+    if (checkLeft()) {
       return;
     }
     removePiece();
@@ -89,16 +89,19 @@ window.addEventListener('keydown', function (event) {
     drawPiece();
     return;
   }
+  // rotate clockwise
   if (event.key === 'e') {
     removePiece();
     rotateRight();
     drawPiece();
   }
+  // rotate counter-clockwise
   if (event.key === 'q') {
     removePiece();
     rotateLeft();
     drawPiece();
   }
+  // move down
   if (event.key === 's') {
     removePiece();
     useGravity();
@@ -216,10 +219,44 @@ function checkTop() {
   return false;
 }
 
-function checkRightWall() {
-  let rightPosition = game.positionX + game.currentPiece[0].length - 1;
+function checkLeft() {
+  let piece = game.currentPiece;
+  // check wall
+  if (game.positionX <= 0) {
+    return true;
+  }
+  // check for piece collisions
+  for (let i = 0; i < piece.length; i++) {
+    let pixel =
+      table.children[i + game.positionY]?.children[game.positionX - 1];
+    console.log(pixel);
+    console.log(piece[i][0]);
+    console.log(pixel.classList.length);
+    // debugger
+    if (piece[i][0] && pixel && pixel.classList.length) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkRight() {
+  let piece = game.currentPiece;
+  let rightPosition = game.positionX + piece[0].length - 1;
+  let lastColumn = piece[0].length - 1;
+  // check wall
   if (rightPosition >= 14) {
     return true;
+  }
+  // check for piece collisions
+  for (let i = 0; i < piece.length; i++) {
+    let pixel =
+      table.children[i + game.positionY]?.children[
+        lastColumn + 1 + game.positionX
+      ];
+    if (piece[i][lastColumn] && pixel && pixel.classList.length) {
+      return true;
+    }
   }
   return false;
 }
