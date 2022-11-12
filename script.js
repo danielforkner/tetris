@@ -20,14 +20,14 @@ let shapes = [
     [0, 1, 0],
     [1, 1, 1],
   ],
-  [
-    [1, 1, 0],
-    [0, 1, 1],
-  ],
-  [
-    [0, 1, 1],
-    [1, 1, 0],
-  ],
+  // [
+  //   [1, 1, 0],
+  //   [0, 1, 1],
+  // ],
+  // [
+  //   [0, 1, 1],
+  //   [1, 1, 0],
+  // ],
 ];
 let game = {
   playing: false,
@@ -52,7 +52,6 @@ for (let i = 0; i < 30; i++) {
   table.appendChild(row);
   for (let j = 0; j < 15; j++) {
     let cell = document.createElement('td');
-    cell.id = i + '-' + j;
     row.appendChild(cell);
   }
 }
@@ -165,6 +164,8 @@ function drawPiece() {
     game.playing = false;
     console.log('YOU LOSE');
   } else if (atBottom) {
+    let pieceBottom = game.currentPiece.length - 1 + game.positionY;
+    checkLineClear(pieceBottom);
     selectNewPiece();
   }
 }
@@ -228,6 +229,25 @@ function checkRightWall() {
     return true;
   }
   return false;
+}
+
+function checkLineClear(line) {
+  console.log(line);
+  let row = table.children[line].children;
+  let cleared = true;
+  for (let i = 0; i < row.length; i++) {
+    if (!row[i].classList.length) {
+      return false;
+    }
+  }
+  table.children[line].remove();
+  let newRow = document.createElement('tr');
+  for (let j = 0; j < 15; j++) {
+    let cell = document.createElement('td');
+    newRow.appendChild(cell);
+  }
+  table.prepend(newRow);
+  return cleared;
 }
 
 function selectNewPiece() {
