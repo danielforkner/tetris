@@ -31,6 +31,7 @@ let shapes = [
 ];
 let game = {
   playing: false,
+  lost: false,
   timer: 0,
   currentPiece: [
     [1, 1],
@@ -42,7 +43,7 @@ let game = {
   score: 0,
   level: 1,
   toNextLevel: 5,
-  speed: 500,
+  speed: 250,
   boardRows: 30,
   boardColumns: 15,
   intervalId: null,
@@ -61,6 +62,10 @@ for (let i = 0; i < game.boardRows; i++) {
 
 // Event Listeners
 playBtn.addEventListener('click', function () {
+  if (game.lost) {
+    resetGame();
+    game.lost = false;
+  }
   if (!game.intervalId) {
     runTick();
   } else {
@@ -68,9 +73,9 @@ playBtn.addEventListener('click', function () {
   }
   game.playing = !game.playing;
   if (game.playing) {
-    playBtn.innerText = 'Pause';
+    playBtn.innerText = 'STOP';
   } else {
-    playBtn.innerText = 'Start';
+    playBtn.innerText = 'PLAY';
   }
 });
 
@@ -120,6 +125,35 @@ window.addEventListener('keydown', function (event) {
 });
 
 // Game Functions
+function resetGame() {
+  game = {
+    playing: false,
+    lost: false,
+    timer: 0,
+    currentPiece: [
+      [1, 1],
+      [1, 1],
+    ],
+    currentColor: 'red',
+    positionY: -2,
+    positionX: 6,
+    score: 0,
+    level: 1,
+    toNextLevel: 5,
+    speed: 500,
+    boardRows: 30,
+    boardColumns: 15,
+    intervalId: null,
+  };
+  for (let i = 0; i < table.children.length; i++) {
+    for (let j = 0; j < table.children[0].length; j++) {
+      let cell = table.children[i].children[j];
+      console.log(cell);
+      cell.className = 'green';
+    }
+  }
+}
+
 function runTick() {
   game.intervalId = setInterval(function () {
     if (!game.playing) return;
@@ -145,12 +179,8 @@ function rotateRight() {
     newArray.push(row);
   }
   game.currentPiece = newArray;
-  // console.log('len: ', newArray.length);
-  // console.log('x: ', game.positionX);
   while (game.positionX + newArray[0].length - 1 > 14) {
-    // console.log(game.positionX);
     game.positionX--;
-    // console.log(game.positionX);
   }
 }
 
@@ -187,6 +217,7 @@ function drawPiece() {
   let atBottom = checkBottom();
   if (atTop && atBottom) {
     game.playing = false;
+    playBtn.innerText = 'PLAY';
     console.log('YOU LOSE');
   } else if (atBottom) {
     for (let i = 0; i < game.currentPiece.length; i++) {
@@ -259,7 +290,6 @@ function checkLeft() {
   for (let i = 0; i < piece.length; i++) {
     let pixel =
       table.children[i + game.positionY]?.children[game.positionX - 1];
-    // debugger
     if (piece[i][0] && pixel && pixel.classList.length) {
       return true;
     }
