@@ -1,5 +1,5 @@
 // GAME STATE
-let colors = ['red', 'blue', 'green', 'orange', 'purple'];
+let colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow'];
 let shapes = [
   [
     [1, 1],
@@ -41,9 +41,11 @@ let game = {
   positionX: 6,
   score: 0,
   level: 1,
+  toNextLevel: 10,
   speed: 500,
   boardRows: 30,
   boardColumns: 15,
+  intervalId: null,
 };
 
 // DOM Elements
@@ -59,6 +61,11 @@ for (let i = 0; i < game.boardRows; i++) {
 
 // Event Listeners
 playBtn.addEventListener('click', function () {
+  if (!game.intervalId) {
+    runTick();
+  } else {
+    clearTick();
+  }
   game.playing = !game.playing;
   if (game.playing) {
     playBtn.innerText = 'Pause';
@@ -113,6 +120,20 @@ window.addEventListener('keydown', function (event) {
 });
 
 // Game Functions
+function runTick() {
+  game.intervalId = setInterval(function () {
+    if (!game.playing) return;
+    removePiece();
+    useGravity();
+    drawPiece();
+  }, game.speed);
+}
+
+function clearTick() {
+  clearInterval(game.intervalId);
+  game.intervalId = null;
+}
+
 function rotateRight() {
   let piece = game.currentPiece;
   let newArray = [];
@@ -291,12 +312,18 @@ function createRow() {
 }
 
 function score() {
-  game.score += 1 * game.level;
-  // if (game.score % 10 === 0) {
-  //   game.level++;
-  // }
+  let pointsEarned = 1 * game.level;
+  game.score += pointsEarned;
   scoreTxt.innerText = game.score;
   levelTxt.innerText = game.level;
+  game.toNextLevel -= pointsEarned;
+  if (game.toNextLevel <= 0) {
+    game.level++;
+    levelTxt.innerText = game.level;
+    game.speed *= 0.9;
+    clearTick();
+    runTick();
+  }
 }
 
 function selectNewPiece() {
@@ -312,11 +339,3 @@ function selectNewPiece() {
     rightPosition = game.positionX + game.currentPiece[0].length - 1;
   }
 }
-
-// Tick
-setInterval(function () {
-  if (!game.playing) return;
-  removePiece();
-  useGravity();
-  drawPiece();
-}, 250);
