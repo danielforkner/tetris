@@ -1,15 +1,18 @@
 * {
     box-sizing: border-box;
+    --baseColor: #6ead7f; /*#64238c*/
+    --gradientColor: #0e4e20;
 }
 body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #58238c;
+    background-color: var(--baseColor);
     color: white
 }
 #header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 #game {
@@ -17,16 +20,23 @@ body {
     flex-direction: column;
     gap: 1rem
 }
+#play {
+    background-color: var(--gradientColor);
+    color: white;
+    border-radius: 50%;
+    padding: 1.5rem;
+}
 td {
-    border: 1px solid #58238c;
+    border: 1px solid var(--baseColor);
     height: 20px;
     width: 20px;
 }
 table {
+    box-shadow: 5px 5px 15px var(--gradientColor);
     border-spacing: 0;
-    background: #8e9eab;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #58238c, #7c6098);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #58238c, #7c6098); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: var(--gradientColor);  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, var(--baseColor), var(--gradientColor));  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, var(--baseColor), var(--gradientColor)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     
 }
 .red {

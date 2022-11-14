@@ -41,7 +41,7 @@ let game = {
   positionX: 6,
   score: 0,
   level: 1,
-  toNextLevel: 10,
+  toNextLevel: 5,
   speed: 500,
   boardRows: 30,
   boardColumns: 15,
@@ -316,7 +316,7 @@ function score() {
   game.score += pointsEarned;
   scoreTxt.innerText = game.score;
   levelTxt.innerText = game.level;
-  game.toNextLevel -= pointsEarned;
+  game.toNextLevel--;
   if (game.toNextLevel <= 0) {
     game.level++;
     levelTxt.innerText = game.level;
