@@ -42,7 +42,6 @@ let game = {
   positionX: 6,
   score: 0,
   level: 1,
-  toNextLevel: 5,
   speed: 250,
   boardRows: 30,
   boardColumns: 15,
@@ -54,6 +53,9 @@ let playBtn = document.getElementById('play');
 let scoreTxt = document.getElementById('score');
 let table = document.getElementById('table');
 let levelTxt = document.getElementById('level');
+let redThemeBtn = document.getElementById('redBtn');
+let greenThemeBtn = document.getElementById('greenBtn');
+let blueThemeBtn = document.getElementById('blueBtn');
 
 // Game Board
 for (let i = 0; i < game.boardRows; i++) {
@@ -80,9 +82,16 @@ playBtn.addEventListener('click', function () {
 });
 
 window.addEventListener('keydown', function (event) {
+  if (event.key === ' ') {
+    console.log('space');
+    playBtn.click();
+    return;
+  }
+
   if (!game.playing) {
     return;
   }
+
   // move right
   if (event.key === 'd') {
     if (checkRight()) {
@@ -108,12 +117,14 @@ window.addEventListener('keydown', function (event) {
     removePiece();
     rotateRight();
     drawPiece();
+    return;
   }
   // rotate counter-clockwise
   if (event.key === 'q') {
     removePiece();
     rotateLeft();
     drawPiece();
+    return;
   }
   // move down
   if (event.key === 's') {
@@ -122,6 +133,19 @@ window.addEventListener('keydown', function (event) {
     drawPiece();
     return;
   }
+});
+
+redThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#c39a9a');
+  document.documentElement.style.setProperty('--secondaryColor', '#4e0e0e');
+});
+greenThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#9ac3a8');
+  document.documentElement.style.setProperty('--secondaryColor', '#0e4e10');
+});
+blueThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#9b9ac3');
+  document.documentElement.style.setProperty('--secondaryColor', '#282781');
 });
 
 // Game Functions
@@ -139,17 +163,15 @@ function resetGame() {
     positionX: 6,
     score: 0,
     level: 1,
-    toNextLevel: 5,
     speed: 500,
     boardRows: 30,
     boardColumns: 15,
     intervalId: null,
   };
   for (let i = 0; i < table.children.length; i++) {
-    for (let j = 0; j < table.children[0].length; j++) {
+    for (let j = 0; j < table.children[0].children.length; j++) {
       let cell = table.children[i].children[j];
-      console.log(cell);
-      cell.className = 'green';
+      cell.className = '';
     }
   }
 }
@@ -217,7 +239,9 @@ function drawPiece() {
   let atBottom = checkBottom();
   if (atTop && atBottom) {
     game.playing = false;
-    playBtn.innerText = 'PLAY';
+    playBtn.innerText = 'RESET';
+    game.lost = true;
+    clearTick();
     console.log('YOU LOSE');
   } else if (atBottom) {
     for (let i = 0; i < game.currentPiece.length; i++) {
@@ -342,12 +366,11 @@ function createRow() {
 }
 
 function score() {
-  let pointsEarned = 1 * game.level;
-  game.score += pointsEarned;
+  game.score++;
   scoreTxt.innerText = game.score;
   levelTxt.innerText = game.level;
   game.toNextLevel--;
-  if (game.toNextLevel <= 0) {
+  if (game.score % 5 === 0) {
     game.level++;
     levelTxt.innerText = game.level;
     game.speed *= 0.9;
