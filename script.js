@@ -34,8 +34,11 @@ let game = {
   lost: false,
   timer: 0,
   currentPiece: shapes[Math.floor(Math.random() * (shapes.length - 1))],
-  nextPiece: shapes[Math.floor(Math.random() * (shapes.length - 1))],
-  currentColor: 'red',
+  nextPiece: {
+    shape: shapes[Math.floor(Math.random() * (shapes.length - 1))],
+    color: colors[Math.floor(Math.random() * (colors.length - 1))],
+  },
+  currentColor: colors[Math.floor(Math.random() * (colors.length - 1))],
   positionY: -2,
   positionX: 6,
   score: 0,
@@ -50,6 +53,7 @@ let game = {
 let playBtn = document.getElementById('play');
 let scoreTxt = document.getElementById('score');
 let table = document.getElementById('table');
+let previewTable = document.getElementById('preview');
 let levelTxt = document.getElementById('level');
 let redThemeBtn = document.getElementById('redBtn');
 let greenThemeBtn = document.getElementById('greenBtn');
@@ -158,7 +162,11 @@ function resetGame() {
       [1, 1],
       [1, 1],
     ],
-    currentColor: 'red',
+    nextPiece: {
+      shape: shapes[Math.floor(Math.random() * (shapes.length - 1))],
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    currentColor: colors[Math.floor(Math.random() * (colors.length - 1))],
     positionY: -2,
     positionX: 6,
     score: 0,
@@ -268,6 +276,7 @@ function checkTopAndBottom() {
     playBtn.innerText = 'RESET';
     game.lost = true;
     clearTick();
+    clearPreviewTable();
     console.log('YOU LOSE');
   } else if (atBottom) {
     for (let i = 0; i < game.currentPiece.length; i++) {
@@ -384,10 +393,11 @@ function score() {
 }
 
 function selectNewPiece() {
-  let randomNumberColors = Math.floor(Math.random() * colors.length);
-  let randomNumberShapes = Math.floor(Math.random() * shapes.length);
-  game.currentColor = colors[randomNumberColors];
-  game.currentPiece = shapes[randomNumberShapes];
+  clearPreviewTable();
+  game.currentColor = game.nextPiece.color;
+  game.currentPiece = game.nextPiece.shape;
+  game.nextPiece.shape = shapes[Math.floor(Math.random() * shapes.length)];
+  game.nextPiece.color = colors[Math.floor(Math.random() * colors.length)];
   let pieceLength = game.currentPiece.length;
   game.positionY = 0 - pieceLength;
   let rightPosition = game.positionX + game.currentPiece[0].length - 1;
@@ -395,5 +405,28 @@ function selectNewPiece() {
   while (rightPosition >= 15) {
     game.positionX--;
     rightPosition = game.positionX + game.currentPiece[0].length - 1;
+  }
+  previewNextPiece();
+}
+
+function clearPreviewTable() {
+  for (let i = 0; i < previewTable.children.length; i++) {
+    for (let j = 0; j < previewTable.children[0].children.length; j++) {
+      let cell = previewTable.children[i].children[j];
+      cell.className = '';
+    }
+  }
+}
+
+function previewNextPiece() {
+  let piece = game.nextPiece.shape;
+  for (let i = 0; i < piece.length; i++) {
+    for (let j = 0; j < piece[0].length; j++) {
+      let cell =
+        previewTable.children[piece.length < 3 ? i + 1 : i].children[j + 1];
+      if (piece[i][j]) {
+        cell.classList.add(game.nextPiece.color);
+      }
+    }
   }
 }
