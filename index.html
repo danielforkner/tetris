@@ -5,31 +5,51 @@
     <title>Document</title>
   </head>
   <body>
-    <!-- <div id="highScores">
-        <h2>High Scores</h2>
-        <p>1. DCF: 150</p>
-        <p>2. DCF: 140</p>
-        <p>3. DCF: 130</p>
-        <p>4. DCF: 120</p>
-    </div> -->
-    <div id="themes">
-      <div id="blueBtn"></div>
-      <div id="redBtn"></div>
-      <div id="greenBtn"></div>
-    </div>
     <div id="game">
-      <div id="header">
-        <div id="play">PLAY</div>
-        <p>Score: <span id="score">0</span></p>
-        <p>Level: <span id="level">1</span></p>
+      <div id="play">PLAY</div>
+      <div id="board">
+        <div id="themes">
+          <div id="blueBtn"></div>
+          <div id="redBtn"></div>
+          <div id="greenBtn"></div>
+        </div>
+        <table>
+          <tbody id="table"></tbody>
+        </table>
+        <div id="rightColumn">
+          <table>
+            <tbody>
+              <tr>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+              </tr>
+              <tr>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+              </tr>
+              <tr>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+              </tr>
+              <tr>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+                <td class="preview"></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Level: <span id="level">1</span></p>
+          <p>Score: <span id="score">0</span></p>
+        </div>
       </div>
       <p>Controls: WASD, Q, E, SPACE</p>
-      <table>
-        <tbody id="table"></tbody>
-      </table>
     </div>
-    <!-- <div id="chatRoom">
-        <h2>Chat Room</h2>
-    </div> -->
   </body>
 </html>

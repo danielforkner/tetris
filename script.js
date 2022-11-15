@@ -33,10 +33,8 @@ let game = {
   playing: false,
   lost: false,
   timer: 0,
-  currentPiece: [
-    [1, 1],
-    [1, 1],
-  ],
+  currentPiece: shapes[Math.floor(Math.random() * (shapes.length - 1))],
+  nextPiece: shapes[Math.floor(Math.random() * (shapes.length - 1))],
   currentColor: 'red',
   positionY: -2,
   positionX: 6,
@@ -393,6 +391,7 @@ function selectNewPiece() {
   let pieceLength = game.currentPiece.length;
   game.positionY = 0 - pieceLength;
   let rightPosition = game.positionX + game.currentPiece[0].length - 1;
+  // prevents a rotation from moving the piece off-board
   while (rightPosition >= 15) {
     game.positionX--;
     rightPosition = game.positionX + game.currentPiece[0].length - 1;
