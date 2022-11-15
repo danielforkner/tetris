@@ -232,7 +232,7 @@ function drawPiece() {
   let atBottom = checkBottom();
   if (atTop && atBottom) {
     game.playing = false;
-    playBtn.innerText = 'PLAY';
+    playBtn.innerText = 'RESET';
     game.lost = true;
     clearTick();
     console.log('YOU LOSE');
