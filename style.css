@@ -2,6 +2,7 @@
   --baseColor: #9b9ac3;
   --secondaryColor: #282781;
   --accentColor: gold;
+  --accentColor2: rgb(133, 113, 0);
 }
 * {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -12,7 +13,7 @@
 body {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   background-color: var(--baseColor);
   color: var(--secondaryColor);
   text-align: center;
@@ -40,12 +41,24 @@ body {
   border-color: var(--accentColor);
   color: var(--baseColor);
   font-weight: bold;
-  border-radius: 50%;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
+  border-top: 2px solid var(--accentColor);
+  border-left: 2px solid var(--accentColor);
+  border-right: 2px solid var(--accentColor2);
+  border-bottom: 2px solid var(--accentColor2);
 }
 #play:hover {
   background-color: var(--baseColor);
   color: var(--secondaryColor);
+  cursor: pointer;
+  box-shadow: 2px 2px 2px var(--accentColor);
+}
+#play:active{
+    border-top: 2px solid var(--accentColor2);
+    border-left: 2px solid var(--accentColor2);
+    border-right: 2px solid var(--accentColor);
+    border-bottom: 2px solid var(--accentColor);
+    box-shadow: 0 0 0
 }
 td {
   border: 1px solid var(--baseColor);
@@ -66,17 +79,29 @@ table {
   background: linear-gradient(to left, var(--baseColor), var(--secondaryColor)); */
 }
 #themes {
+  padding: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 1rem;
 }
 #themes > div {
   width: 30px;
   height: 30px;
-  border: 1px solid var(--accentColor);
+  border-top: 2px solid var(--accentColor);
+  border-left: 2px solid var(--accentColor);
+  border-right: 2px solid var(--accentColor2);
+  border-bottom: 2px solid var(--accentColor2);
 }
+#themes > div:hover {
+    box-shadow: 2px 2px 8px var(--accentColor);
+  }
+#themes > div:active {
+    box-shadow: 0 0 0 
+  }
 #blueBtn {
   background-color: #282781;
+  background-image: linear-gradient(to top left, #282781, #282781 50%,#9b9ac3 50%, #9b9ac3 100% )
 }
 #blueBtn:hover {
   background-color: #9b9ac3;
@@ -84,6 +109,7 @@ table {
 }
 #redBtn {
   background-color: #4e0e0e;
+  background-image: linear-gradient(to top left, #4e0e0e, #4e0e0e 50%,#c39a9a 50%, #c39a9a 100% )
 }
 #redBtn:hover {
   background-color: #c39a9a;
@@ -91,14 +117,15 @@ table {
 }
 #greenBtn {
   background-color: #0e4e10;
+  background-image: linear-gradient(to top left, #0e4e10, #0e4e10 50%,#9ac3a8 50%, #9ac3a8 100% )
 }
 #greenBtn:hover {
   background-color: #9ac3a8;
   cursor: pointer;
 }
 .red {
-  /* background-image: url('https://github.com/danielforkner/tetris/blob/main/img/red.png?raw=true'); */
-  background-image: url('img/red.png');
+  background-image: url('https://github.com/danielforkner/tetris/blob/main/img/red.png?raw=true');
+  /* background-image: url('img/red.png'); */
   background-color: red;
   background-size: cover;
 }
@@ -108,8 +135,8 @@ table {
   background-size: cover;
 }
 .blue {
-  /* background-image: url('https://github.com/danielforkner/tetris/blob/main/img/blue.png?raw=true'); */
-  background-image: url('img/blue.png');
+  background-image: url('https://github.com/danielforkner/tetris/blob/main/img/blue.png?raw=true');
+  /* background-image: url('img/blue.png'); */
   background-color: blue;
   background-size: cover;
 }

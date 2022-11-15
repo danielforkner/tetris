@@ -83,7 +83,6 @@ playBtn.addEventListener('click', function () {
 
 window.addEventListener('keydown', function (event) {
   if (event.key === ' ') {
-    console.log('space');
     playBtn.click();
     return;
   }
@@ -128,6 +127,9 @@ window.addEventListener('keydown', function (event) {
   }
   // move down
   if (event.key === 's') {
+    if (checkBottom()) {
+      return;
+    }
     removePiece();
     useGravity();
     drawPiece();
@@ -179,6 +181,7 @@ function resetGame() {
 function runTick() {
   game.intervalId = setInterval(function () {
     if (!game.playing) return;
+    checkTopAndBottom();
     removePiece();
     useGravity();
     drawPiece();
@@ -235,20 +238,6 @@ function drawPiece() {
       pixel.classList.add(game.currentColor);
     }
   }
-  let atTop = checkTop();
-  let atBottom = checkBottom();
-  if (atTop && atBottom) {
-    game.playing = false;
-    playBtn.innerText = 'RESET';
-    game.lost = true;
-    clearTick();
-    console.log('YOU LOSE');
-  } else if (atBottom) {
-    for (let i = 0; i < game.currentPiece.length; i++) {
-      checkLineClear(i + game.positionY);
-    }
-    selectNewPiece();
-  }
 }
 
 function useGravity() {
@@ -270,6 +259,23 @@ function removePiece() {
       }
       pixel.classList.remove(game.currentColor);
     }
+  }
+}
+
+function checkTopAndBottom() {
+  let atTop = checkTop();
+  let atBottom = checkBottom();
+  if (atTop && atBottom) {
+    game.playing = false;
+    playBtn.innerText = 'RESET';
+    game.lost = true;
+    clearTick();
+    console.log('YOU LOSE');
+  } else if (atBottom) {
+    for (let i = 0; i < game.currentPiece.length; i++) {
+      checkLineClear(i + game.positionY);
+    }
+    selectNewPiece();
   }
 }
 
