@@ -54,6 +54,9 @@ let playBtn = document.getElementById('play');
 let scoreTxt = document.getElementById('score');
 let table = document.getElementById('table');
 let levelTxt = document.getElementById('level');
+let redThemeBtn = document.getElementById('redBtn');
+let greenThemeBtn = document.getElementById('greenBtn');
+let blueThemeBtn = document.getElementById('blueBtn');
 
 // Game Board
 for (let i = 0; i < game.boardRows; i++) {
@@ -124,6 +127,19 @@ window.addEventListener('keydown', function (event) {
   }
 });
 
+redThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#c39a9a');
+  document.documentElement.style.setProperty('--secondaryColor', '#4e0e0e');
+});
+greenThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#9ac3a8');
+  document.documentElement.style.setProperty('--secondaryColor', '#0e4e10');
+});
+blueThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#9b9ac3');
+  document.documentElement.style.setProperty('--secondaryColor', '#0f0e4e');
+});
+
 // Game Functions
 function resetGame() {
   game = {
@@ -146,10 +162,9 @@ function resetGame() {
     intervalId: null,
   };
   for (let i = 0; i < table.children.length; i++) {
-    for (let j = 0; j < table.children[0].length; j++) {
+    for (let j = 0; j < table.children[0].children.length; j++) {
       let cell = table.children[i].children[j];
-      console.log(cell);
-      cell.className = 'green';
+      cell.className = '';
     }
   }
 }
@@ -218,6 +233,8 @@ function drawPiece() {
   if (atTop && atBottom) {
     game.playing = false;
     playBtn.innerText = 'PLAY';
+    game.lost = true;
+    clearTick();
     console.log('YOU LOSE');
   } else if (atBottom) {
     for (let i = 0; i < game.currentPiece.length; i++) {
