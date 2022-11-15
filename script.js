@@ -77,6 +77,7 @@ playBtn.addEventListener('click', function () {
   }
   game.playing = !game.playing;
   if (game.playing) {
+    previewNextPiece();
     playBtn.innerText = 'STOP';
   } else {
     playBtn.innerText = 'PLAY';
@@ -226,6 +227,9 @@ function rotateLeft() {
     newArray.push(row);
   }
   game.currentPiece = newArray;
+  while (game.positionX + newArray[0].length - 1 > 14) {
+    game.positionX--;
+  }
 }
 
 function drawPiece() {
