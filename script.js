@@ -280,9 +280,13 @@ function checkTopAndBottom() {
     clearPreviewTable();
     console.log('YOU LOSE');
   } else if (atBottom) {
+    let linesToClear = [];
     for (let i = 0; i < game.currentPiece.length; i++) {
-      checkLineClear(i + game.positionY);
+      if (checkLineClear(i + game.positionY)) {
+        linesToClear.push(i + game.positionY);
+      }
     }
+    removeLines(linesToClear);
     selectNewPiece();
   }
 }
@@ -372,10 +376,27 @@ function checkLineClear(line) {
       return false;
     }
   }
-  table.children[line].remove();
-  score();
-  createRow();
   return cleared;
+}
+
+function sleep(time) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+}
+
+function removeLines(lines = []) {
+  lines.forEach((line) => {
+    table.children[line].remove();
+    score();
+    createRow();
+    // for (let i = 0; i < table.children[line].children.length; i++) {
+    //   table.children[line].children[i].className = 'yellow';
+    //   // await sleep(10);
+    // }
+  });
 }
 
 function createRow() {
