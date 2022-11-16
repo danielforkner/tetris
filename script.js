@@ -59,6 +59,7 @@ let redThemeBtn = document.getElementById('redBtn');
 let greenThemeBtn = document.getElementById('greenBtn');
 let blueThemeBtn = document.getElementById('blueBtn');
 let grayThemeBtn = document.getElementById('grayBtn');
+let snapBtn = document.getElementById('snapBtn');
 
 // Game Board
 for (let i = 0; i < game.boardRows; i++) {
@@ -135,7 +136,11 @@ window.addEventListener('keydown', function (event) {
       return;
     }
     removePiece();
-    useGravity();
+    if (snapBtn.checked) {
+      snapToBottom();
+    } else {
+      useGravity();
+    }
     drawPiece();
     return;
   }
@@ -318,6 +323,12 @@ function checkBottom() {
     }
   }
   return false;
+}
+
+function snapToBottom() {
+  while (!checkBottom()) {
+    game.positionY++;
+  }
 }
 
 function checkTop() {
