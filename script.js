@@ -58,6 +58,7 @@ let levelTxt = document.getElementById('level');
 let redThemeBtn = document.getElementById('redBtn');
 let greenThemeBtn = document.getElementById('greenBtn');
 let blueThemeBtn = document.getElementById('blueBtn');
+let grayThemeBtn = document.getElementById('grayBtn');
 
 // Game Board
 for (let i = 0; i < game.boardRows; i++) {
@@ -151,6 +152,10 @@ greenThemeBtn.addEventListener('click', function () {
 blueThemeBtn.addEventListener('click', function () {
   document.documentElement.style.setProperty('--baseColor', '#9b9ac3');
   document.documentElement.style.setProperty('--secondaryColor', '#282781');
+});
+grayThemeBtn.addEventListener('click', function () {
+  document.documentElement.style.setProperty('--baseColor', '#bdbdbd');
+  document.documentElement.style.setProperty('--secondaryColor', '#2a2a2a');
 });
 
 // Game Functions
@@ -387,15 +392,14 @@ function sleep(time) {
   });
 }
 
-function removeLines(lines = []) {
+function removeLines(lines) {
   lines.forEach((line) => {
+    Array.from(table.children[line].children).forEach(
+      (cell) => (cell.className = 'cleared')
+    );
     table.children[line].remove();
     score();
     createRow();
-    // for (let i = 0; i < table.children[line].children.length; i++) {
-    //   table.children[line].children[i].className = 'yellow';
-    //   // await sleep(10);
-    // }
   });
 }
 

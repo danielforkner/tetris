@@ -145,6 +145,14 @@ table {
   background-color: #9ac3a8;
   cursor: pointer;
 }
+#grayBtn {
+  background-color: #2a2a2a;
+  background-image: linear-gradient(to top left, #2a2a2a, #2a2a2a 50%,#bdbdbd 50%, #bdbdbd 100% )
+}
+#grayBtn:hover {
+  background-color: #bdbdbd;
+  cursor: pointer;
+}
 .red {
   background-image: url('https://github.com/danielforkner/tetris/blob/main/img/red.png?raw=true');
   /* background-image: url('img/red.png'); */
