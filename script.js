@@ -159,10 +159,7 @@ function resetGame() {
     playing: false,
     lost: false,
     timer: 0,
-    currentPiece: [
-      [1, 1],
-      [1, 1],
-    ],
+    currentPiece: shapes[Math.floor(Math.random() * (shapes.length - 1))],
     nextPiece: {
       shape: shapes[Math.floor(Math.random() * (shapes.length - 1))],
       color: colors[Math.floor(Math.random() * (colors.length - 1))],
@@ -305,7 +302,7 @@ function checkBottom() {
       if (piece[i][j] && !piece[i + 1]?.[j]) {
         let y = game.positionY + i + 1;
         let x = game.positionX + j;
-        if (table.children[y].children[x].classList.length) {
+        if (table.children[y]?.children[x]?.classList.length) {
           return true;
         }
       }
@@ -329,10 +326,15 @@ function checkLeft() {
   }
   // check for piece collisions
   for (let i = 0; i < piece.length; i++) {
-    let pixel =
-      table.children[i + game.positionY]?.children[game.positionX - 1];
-    if (piece[i][0] && pixel && pixel.classList.length) {
-      return true;
+    for (let j = 0; j < piece[i].length; j++) {
+      // check for hanging blocks
+      if (piece[i][j] && !piece[i]?.[j - 1]) {
+        let y = game.positionY + i;
+        let x = game.positionX + j - 1;
+        if (table.children[y]?.children[x]?.classList.length) {
+          return true;
+        }
+      }
     }
   }
   return false;
@@ -348,12 +350,15 @@ function checkRight() {
   }
   // check for piece collisions
   for (let i = 0; i < piece.length; i++) {
-    let pixel =
-      table.children[i + game.positionY]?.children[
-        lastColumn + 1 + game.positionX
-      ];
-    if (piece[i][lastColumn] && pixel && pixel.classList.length) {
-      return true;
+    for (let j = 0; j < piece[i].length; j++) {
+      // check for hanging blocks
+      if (piece[i][j] && !piece[i]?.[j + 1]) {
+        let y = game.positionY + i;
+        let x = game.positionX + j + 1;
+        if (table.children[y]?.children[x]?.classList.length) {
+          return true;
+        }
+      }
     }
   }
   return false;
