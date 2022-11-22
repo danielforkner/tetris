@@ -44,8 +44,8 @@ let game = {
   score: 0,
   level: 1,
   speed: 250,
-  boardRows: 30,
-  boardColumns: 15,
+  boardRows: 20,
+  boardColumns: 10,
   intervalId: null,
 };
 
@@ -180,8 +180,8 @@ function resetGame() {
     score: 0,
     level: 1,
     speed: 500,
-    boardRows: 30,
-    boardColumns: 15,
+    boardRows: 20,
+    boardColumns: 10,
     intervalId: null,
   };
   for (let i = 0; i < table.children.length; i++) {
@@ -218,7 +218,7 @@ function rotateRight() {
     newArray.push(row);
   }
   game.currentPiece = newArray;
-  while (game.positionX + newArray[0].length - 1 > 14) {
+  while (game.positionX + newArray[0].length - 1 > game.boardColumns - 1) {
     game.positionX--;
   }
 }
@@ -234,7 +234,7 @@ function rotateLeft() {
     newArray.push(row);
   }
   game.currentPiece = newArray;
-  while (game.positionX + newArray[0].length - 1 > 14) {
+  while (game.positionX + newArray[0].length - 1 > game.boardColumns - 1) {
     game.positionX--;
   }
 }
@@ -365,7 +365,7 @@ function checkRight() {
   let rightPosition = game.positionX + piece[0].length - 1;
   let lastColumn = piece[0].length - 1;
   // check wall
-  if (rightPosition >= 14) {
+  if (rightPosition >= game.boardColumns - 1) {
     return true;
   }
   // check for piece collisions
@@ -447,7 +447,7 @@ function selectNewPiece() {
   game.positionY = 0 - pieceLength;
   let rightPosition = game.positionX + game.currentPiece[0].length - 1;
   // prevents a rotation from moving the piece off-board
-  while (rightPosition >= 15) {
+  while (rightPosition >= game.boardColumns) {
     game.positionX--;
     rightPosition = game.positionX + game.currentPiece[0].length - 1;
   }
